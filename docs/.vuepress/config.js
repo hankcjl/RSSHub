@@ -1,3 +1,6 @@
+const pinyin = require('pinyin');
+const { slugify: _slugify } = require('@vuepress/shared-utils');
+
 module.exports = {
     plugins: {
         '@vuepress/google-analytics': {
@@ -30,6 +33,24 @@ module.exports = {
             description: '🍰 Everything is RSSible',
         },
     },
+    markdown: {
+        slugify: function (s) {
+            return _slugify(
+                pinyin(s, {
+                    style: pinyin.STYLE_NORMAL,
+                    heteronym: true,
+                    segment: true,
+                })
+                    .map((item) => item[0])
+                    .join('-')
+            );
+        },
+        anchor: {
+            permalink: true,
+            permalinkBefore: true,
+            permalinkSymbol: '#',
+        },
+    },
     head: [
         ['link', { rel: 'icon', href: '/logo.png' }],
         ['link', { rel: 'manifest', href: '/manifest.json' }],
@@ -43,14 +64,18 @@ module.exports = {
         repo: 'DIYgod/RSSHub',
         editLinks: true,
         docsDir: 'docs',
+        smoothScroll: true,
         algolia: {
             apiKey: '6247bc0db93150fd9e531b93a3fa4046',
             indexName: 'rsshub',
+            algoliaOptions: {
+                hitsPerPage: 14,
+            },
         },
         locales: {
             '/': {
                 lang: 'zh-CN',
-                selectText: '选择语言',
+                selectText: 'Languages',
                 label: '简体中文',
                 editLinkText: '在 GitHub 上编辑此页',
                 lastUpdated: '上次更新',
@@ -77,7 +102,7 @@ module.exports = {
                         {
                             title: '指南',
                             collapsable: true,
-                            children: ['', 'parameter', 'api'],
+                            children: ['', 'usage', 'faq', 'parameter', 'api'],
                         },
                         {
                             title: '路由',
@@ -104,6 +129,8 @@ module.exports = {
                                 'reading',
                                 'government',
                                 'study',
+                                'journal',
+                                'finance',
                                 'other',
                             ],
                         },
@@ -112,7 +139,7 @@ module.exports = {
             },
             '/en/': {
                 lang: 'en-US',
-                selectText: 'Languages',
+                selectText: '选择语言',
                 label: 'English',
                 editLinkText: 'Edit this page on GitHub',
                 lastUpdated: 'Last Updated',
@@ -139,7 +166,7 @@ module.exports = {
                         {
                             title: 'Guide',
                             collapsable: true,
-                            children: ['', 'parameter', 'api'],
+                            children: ['', 'usage', 'faq', 'parameter', 'api'],
                         },
                         {
                             title: 'Routes',
@@ -166,6 +193,8 @@ module.exports = {
                                 'reading',
                                 'government',
                                 'study',
+                                'journal',
+                                'finance',
                                 'other',
                             ],
                         },

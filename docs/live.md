@@ -10,6 +10,12 @@ pageClass: routes
 
 <Route author="LogicJake" example="/kingkong/room/2133342" path="/kingkong/room/:id" :paramsDesc="['直播间 id, 可在主播直播间页 URL 中找到']"/>
 
+## SHOWROOM 直播
+
+### 直播间开播
+
+<Route author="nwindz" example="/showroom/room/93401" path="/showroom/room/:id" :paramsDesc="['直播间 id, 打开浏览器控制台，刷新页面，找到请求中的room_id参数']"/>
+
 ## 哔哩哔哩直播
 
 ### 直播开播
@@ -43,3 +49,9 @@ pageClass: routes
 ### 直播间开播
 
 <Route author="SettingDust xyqfer" example="/huya/live/edmunddzhang" path="/huya/live/:id" :paramsDesc="['直播间id或主播名(有一些id是名字，如上)']"/>
+
+## 战旗直播
+
+### 直播间开播
+
+<Route author="cssxsh" example="/zhanqi/room/anime" path="/zhanqi/room/:id" :paramsDesc="['直播间 id, 可在主播直播间页 URL 中找到']"/>

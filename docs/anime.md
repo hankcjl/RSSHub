@@ -9,6 +9,36 @@ pageClass: routes
 ### 二次元资讯
 
 <Route author="junfengP" example="/005tv/zx/latest" path="/005tv/zx/latest"/>
+
+## 1draw #深夜の真剣お絵描き 60 分一本勝負
+
+### 投稿一览
+
+<Route author="jackyu1996" path="/1draw/" example="/1draw/" />
+
+## AcFun
+
+### 番剧
+
+<Route author="xyqfer" example="/acfun/bangumi/5022158" path="/acfun/bangumi/:id" :paramsDesc="['番剧 id']"/>
+
+::: tip 提示
+
+番剧 id 不包含开头的 aa。
+例如：http://www.acfun.cn/bangumi/aa5022158 的番剧 id 是 5022158，不包括开头的 aa。
+
+:::
+
+### 用户投稿
+
+<Route author="wdssmq" example="/acfun/user/video/14450522" path="/acfun/user/video/:id" :paramsDesc="['用户 UID']"/>
+
+## AGE 动漫
+
+### 番剧详情
+
+<Route author="s2marine" example="/agefans/detail/20200035" path="/agefans/detail/:id" :paramsDesc="['番剧 id，对应详情 URL 中找到']"/>
+
 ## Anime1
 
 ### 動畫
@@ -79,6 +109,23 @@ pageClass: routes
 
 见 [#bilibili](/social-media.html#bilibili)
 
+## DLsite
+
+### 当前日期发售的新产品
+
+<Route author="cssxsh" example="/dlsite/new/home" path="/dlsite/new/:type" :paramsDesc="['类型，如下表']">
+
+| 同人 | 漫画  | 软件 | 同人(R18) | 漫画(R18) | 美少女游戏 | 乙女  | BL  |
+| ---- | ----- | ---- | --------- | --------- | ---------- | ----- | --- |
+| home | comic | soft | maniax    | books     | pro        | girls | bl  |
+
+</Route>
+
+### 产品打折信息
+
+<Route author="cssxsh" example="/dlsite/campaign/home" path="/dlsite/campaign/:type/:free?" :paramsDesc="['类型，同上表', '只看免费，任意值开启，为空关闭']">
+</Route>
+
 ## ebb.io
 
 ### ebb
@@ -115,6 +162,16 @@ pageClass: routes
 
 </Route>
 
+### 用户动态
+
+<Route author="luyuhuang DIYgod" path="/hpoi/user/:user_id/:caty" example="/hpoi/user/116297/buy" :paramsDesc="['用户ID', '类别, 见下表']">
+
+| 想买 | 预定     | 已入 | 关注 | 有过   |
+| ---- | -------- | ---- | ---- | ------ |
+| want | preorder | buy  | care | resell |
+
+</Route>
+
 ## say 花火
 
 ### 文章
@@ -125,13 +182,25 @@ pageClass: routes
 
 ### vol
 
-<Route author="CoderTonyChan" example="/vol/finsh" path="/vol/:mode?" :paramsDesc="['模式']">
+<Route author="CoderTonyChan" example="/vol/finish" path="/vol/:mode?" :paramsDesc="['模式']">
 
-| 连载   | 完结  |
-| ------ | ----- |
-| serial | finsh |
+| 连载   | 完结   |
+| ------ | ------ |
+| serial | finish |
 
 </Route>
+
+## Webtoons
+
+### 漫画更新
+
+<Route author="machsix" path="/webtoons/:lang/:category/:name/:id" example="/webtoons/zh-hant/drama/gongzhuweimian/894" :paramsDesc="['语言','类别','名称','ID']"/>
+
+比如漫画公主彻夜未眠的网址为https://www.webtoons.com/zh-hant/drama/gongzhuweimian/list?title_no=894, 则`lang=zh-hant`,`category=drama`,`name=gongzhucheyeweimian`,`id=894`.
+
+### [Naver](https://comic.naver.com)
+
+<Route author="zfanta" example="/webtoons/naver/651673" path="/webtoons/naver/:titleId" :paramsDesc="['titleId']" />
 
 ## 嘀哩嘀哩 - dilidili
 
@@ -142,6 +211,18 @@ pageClass: routes
 请打开对应番剧的纵览页(非具体某集),从 url 中最后一位查看番剧 id.(一般为英文)
 除去'海贼'此类具有特殊页面的超长番剧,绝大多数页面都可以解析.
 最适合用来追新番
+
+</Route>
+
+## 電撃オンライン
+
+### 最新記事
+
+<Route author="cssxsh" path="/dengekionline/:type?" example="/dengekionline/dps" :paramsDesc="['新闻类别，如下表']">
+
+| All | PlayStation | Nintendo | Xbox      | PC  | Girl’sStyle | Arcade Web | App | Anime | Review | Rank |
+| --- | ----------- | -------- | --------- | --- | ----------- | ---------- | --- | ----- | ------ | ---- |
+|     | dps         | nintendo | microsoft | dpc | gstyle      | arcade     | app | anime | review | rank |
 
 </Route>
 
@@ -159,13 +240,19 @@ pageClass: routes
 
 ### 漫画更新
 
-<Route author="Machsix" path="/dongmanmanhua/comic/:category/:name/:id" example="/dongmanmanhua/comic/COMEDY/xin-xinlingdeshengyin/381" :paramsDesc="['类别','名称','ID']"/>
+<Route author="machsix" path="/dongmanmanhua/:category/:name/:id" example="/dongmanmanhua/COMEDY/xin-xinlingdeshengyin/381" :paramsDesc="['类别','名称','ID']"/>
 
 ## 動漫狂
 
 ### 漫画更新
 
 <Route author="KellyHwong" path="/cartoonmad/comic/:id" example="/cartoonmad/comic/5827" :paramsDesc="['漫画ID']"/>
+
+## 海猫吧
+
+### 漫画更新
+
+<Route author="zytomorrow" path="/haimaoba/:id" example="/haimaoba/4026" :paramsDesc="['漫画id，漫画主页的地址栏中最后一位数字']" radar="1"/>
 
 ## 看漫画
 
@@ -179,17 +266,29 @@ pageClass: routes
 
 <Route author="junfengP" path="/manhuadb/:id" example="/manhuadb/comics/1711" :paramsDesc="['漫画ID']"/>
 
+## 三界异次元
+
+### 三界异次元
+
+<Route author="luyuhuang" example="/3ycy/home" path="/3ycy/home" radar="1"/>
+
+## 紳士漫畫
+
+### 最新
+
+<Route author="KenMizz" example="/ssmh" path="/ssmh/">
+
 ## 鼠绘漫画
 
 ### 鼠绘漫画
 
-<Route author="zytomorrow" path="/shuhui/comics/:id" example="/shuhui/comics/1" :paramsDesc="['漫画id，漫画主页的地址栏中最后一位数字']"/>
+<Route author="zytomorrow" path="/shuhui/comics/:id" example="/shuhui/comics/1" :paramsDesc="['漫画id，漫画主页的地址栏中最后一位数字']" radar="1"/>
 
 ## 忧郁的 loli
 
 ### 文章
 
-<Route author="DIYgod" example="/mmgal" path="/mmgal"/>
+<Route author="DIYgod kotoyuuko" example="/hhgal" path="/hhgal"/>
 
 ## 终点分享
 

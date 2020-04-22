@@ -19,9 +19,13 @@ afterEach(() => {
     const http = require('http');
     const httpWrap = (func) => {
         const origin = func;
-        return function(url, request) {
+        return function (url, request) {
             if (typeof url === 'object') {
-                check(url);
+                if (url instanceof URL) {
+                    check(request);
+                } else {
+                    check(url);
+                }
             } else {
                 check(request);
             }
@@ -34,16 +38,20 @@ afterEach(() => {
 
 describe('got', () => {
     it('headers', async () => {
-        nock('http://rsshub.test')
-            .get('/test')
-            .times(2)
-            .reply(function() {
+        nock(/rsshub\.test/)
+            .get(/.*/)
+            .times(3)
+            .reply(function () {
                 expect(this.req.headers.server).toBe('RSSHub');
+                expect(this.req.headers.referer).toBe('http://api.rsshub.test');
+                expect(this.req.headers.host).toBe('api.rsshub.test');
                 return [200, simpleResponse];
             });
 
-        await got.get('http://rsshub.test/test');
-        await parser.parseURL('http://rsshub.test/test');
+        await got.get('http://api.rsshub.test/test');
+        await got.get('http://api.rsshub.test');
+
+        await parser.parseURL('http://api.rsshub.test/test');
     });
 
     it('proxy socks', async () => {
@@ -55,10 +63,11 @@ describe('got', () => {
         require('../../lib/utils/request-wrapper');
         check = (request) => {
             expect(request.agent.constructor.name).toBe('SocksProxyAgent');
-            expect(request.agent.options.href).toBe('socks://rsshub.proxy:2333');
+            expect(request.agent.proxy.host).toBe('rsshub.proxy');
+            expect(request.agent.proxy.port).toBe(2333);
         };
 
-        nock('http://rsshub.test')
+        nock(/rsshub\.test/)
             .get('/proxy')
             .times(2)
             .reply(200, simpleResponse);
@@ -80,7 +89,7 @@ describe('got', () => {
             expect(request.agent.options.proxy.port).toBe(2333);
         };
 
-        nock('http://rsshub.test')
+        nock(/rsshub\.test/)
             .get('/proxy')
             .times(2)
             .reply(200, simpleResponse);
@@ -102,7 +111,7 @@ describe('got', () => {
             expect(request.agent.options.proxy.port).toBe(2333);
         };
 
-        nock('http://rsshub.test')
+        nock(/rsshub\.test/)
             .get('/proxy')
             .times(2)
             .reply(200, simpleResponse);
@@ -120,10 +129,10 @@ describe('got', () => {
         jest.resetModules();
         require('../../lib/utils/request-wrapper');
 
-        nock('http://rsshub.test')
+        nock(/rsshub\.test/)
             .get('/auth')
             .times(2)
-            .reply(function() {
+            .reply(function () {
                 expect(this.req.headers['proxy-authorization']).toBe('Basic testtest');
                 return [200, simpleResponse];
             });
@@ -143,17 +152,18 @@ describe('got', () => {
         check = (request) => {
             if (request.path === '/url_regex') {
                 expect(request.agent.constructor.name).toBe('SocksProxyAgent');
-                expect(request.agent.options.href).toBe('socks://rsshub.proxy:2333');
+                expect(request.agent.proxy.host).toBe('rsshub.proxy');
+                expect(request.agent.proxy.port).toBe(2333);
             } else if (request.path === '/proxy') {
                 expect(request.agent).toBe(undefined);
             }
         };
 
-        nock('http://rsshub.test')
+        nock(/rsshub\.test/)
             .get('/url_regex')
             .times(2)
             .reply(() => [200, simpleResponse]);
-        nock('http://rsshub.test')
+        nock(/rsshub\.test/)
             .get('/proxy')
             .times(2)
             .reply(() => [200, simpleResponse]);
